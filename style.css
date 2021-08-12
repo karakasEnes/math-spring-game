@@ -131,7 +131,7 @@ label {
 }
 
 .item-container::-webkit-scrollbar {
-  display: none;
+  display: all;
 }
 
 .item {
