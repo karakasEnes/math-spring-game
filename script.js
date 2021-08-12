@@ -41,10 +41,35 @@ function getQuestionAmount() {
   return radioValue;
 }
 
+function countdownStart() {
+  let countdownNumber = 3;
+  countdown.textContent = countdownNumber;
+
+  let myTimer = setInterval(() => {
+    countdownNumber--;
+    countdown.textContent = countdownNumber;
+  }, 1000);
+
+  setTimeout(() => {
+    clearInterval(myTimer);
+    countdown.textContent = "GO!";
+  }, 3000);
+}
+
+// hide spashpage show countdownpage
+function showCountDownPage() {
+  splashPage.hidden = true;
+  countdownPage.hidden = false;
+  countdownStart();
+}
+
 function selectQuestionAmount(e) {
   e.preventDefault();
   questionAmount = getQuestionAmount();
   console.log(questionAmount);
+  if (questionAmount) {
+    showCountDownPage();
+  }
 }
 
 // Event Listeners ****
