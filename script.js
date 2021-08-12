@@ -21,6 +21,11 @@ const playAgainBtn = document.querySelector(".play-again");
 // Equations
 let questionAmount = 0;
 let equationsArray = [];
+let playerGuessArray = [];
+
+// scroll
+
+let valueScrollY = 0;
 
 // Game Page
 let firstNumber = 0;
@@ -96,6 +101,20 @@ function selectQuestionAmount(e) {
     populateGamePage();
   }
 }
+
+// right & wrong function
+
+function select(selectedTrue) {
+  valueScrollY += 80;
+
+  itemContainer.scroll(0, valueScrollY);
+
+  selectedTrue ? playerGuessArray.push("true") : playerGuessArray.push("false");
+
+  console.log(playerGuessArray);
+}
+
+// ------
 
 // Create Correct/Incorrect Random Equations
 function createEquations() {
