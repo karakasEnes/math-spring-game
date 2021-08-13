@@ -13,7 +13,7 @@ const countdown = document.querySelector(".countdown");
 // Game Page
 const itemContainer = document.querySelector(".item-container");
 // Score Page
-const yourTimeEl = document.querySelector(".score-container > .title");
+
 const finalTimeEl = document.querySelector(".final-time");
 const baseTimeEl = document.querySelector(".base-time");
 const penaltyTimeEl = document.querySelector(".penalty-time");
@@ -31,6 +31,17 @@ let finalTime = 0;
 let baseTime = 0;
 let penaltyTime = 0;
 
+// resetTheGAme (button)
+function playAgain() {
+  playerTrueGuessNumber = 0;
+  valueScrollY = 0;
+  equationsArray = [];
+  playerGuessArray = [];
+
+  scorePage.hidden = true;
+  splashPage.hidden = false;
+}
+
 //
 let playerTrueGuessNumber = 0;
 
@@ -40,18 +51,22 @@ function addTimer() {
 }
 
 function updateTimerElements() {
-  yourTimeEl.textContent = `yourTime: ${timePlayed}`;
-  finalTimeEl.textContent = `finalTime: ${Math.round(finalTime * 10) / 10}s`;
-  baseTimeEl.textContent = `BaseTime: ${baseTime}s`;
-  penaltyTimeEl.textContent = `PenaltyTime: ${penaltyTime}s`;
+  finalTimeEl.textContent = `${Math.round(finalTime * 10) / 10}s`;
+  baseTimeEl.textContent = `BaseTime: ${timePlayed.toFixed(1)}s`;
+  penaltyTimeEl.textContent = `PenaltyTime: +${penaltyTime}s`;
 }
 
 function stopTimer() {
   clearInterval(timer);
   calculationPlayerScore();
   updateTimerElements();
+  itemContainer.scrollTo({ top: 0, behavior: "instant" });
   gamePage.hidden = true;
   scorePage.hidden = false;
+
+  setTimeout(() => {
+    playAgainBtn.hidden = false;
+  }, 1000);
 }
 
 function startTimer() {
