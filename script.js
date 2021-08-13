@@ -185,16 +185,18 @@ function showCountDownPage() {
 function countdownStart() {
   let countdownNumber = 3;
   countdown.textContent = countdownNumber;
-
   let myTimer = setInterval(() => {
     countdownNumber--;
-    countdown.textContent = countdownNumber;
-  }, 1000);
 
-  setTimeout(() => {
-    clearInterval(myTimer);
-    countdown.textContent = "GO!";
-  }, 3000);
+    if (countdownNumber === 0) {
+      countdown.textContent = "GO!";
+    } else if (countdownNumber === -1) {
+      clearInterval(myTimer);
+      populateGamePage();
+    } else {
+      countdown.textContent = countdownNumber;
+    }
+  }, 1000);
 }
 
 function equationToDOM() {
@@ -219,10 +221,9 @@ function equationToDOM() {
 function selectQuestionAmount(e) {
   e.preventDefault();
   questionAmount = getQuestionAmount();
-  console.log(questionAmount);
+
   if (questionAmount) {
     showCountDownPage();
-    populateGamePage();
   }
 }
 
