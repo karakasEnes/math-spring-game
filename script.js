@@ -13,6 +13,7 @@ const countdown = document.querySelector(".countdown");
 // Game Page
 const itemContainer = document.querySelector(".item-container");
 // Score Page
+const yourTimeEl = document.querySelector(".score-container > .title");
 const finalTimeEl = document.querySelector(".final-time");
 const baseTimeEl = document.querySelector(".base-time");
 const penaltyTimeEl = document.querySelector(".penalty-time");
@@ -23,8 +24,62 @@ let questionAmount = 0;
 let equationsArray = [];
 let playerGuessArray = [];
 
-// scroll
+//timer
+let timer;
+let timePlayed = 0;
+let finalTime = 0;
+let baseTime = 0;
+let penaltyTime = 0;
 
+//
+let playerTrueGuessNumber = 0;
+
+function addTimer() {
+  timePlayed += 0.1;
+  console.log(timePlayed);
+}
+
+function updateTimerElements() {
+  yourTimeEl.textContent = `yourTime: ${timePlayed}`;
+  finalTimeEl.textContent = `finalTime: ${Math.round(finalTime * 10) / 10}s`;
+  baseTimeEl.textContent = `BaseTime: ${baseTime}s`;
+  penaltyTimeEl.textContent = `PenaltyTime: ${penaltyTime}s`;
+}
+
+function stopTimer() {
+  clearInterval(timer);
+  calculationPlayerScore();
+  updateTimerElements();
+  gamePage.hidden = true;
+  scorePage.hidden = false;
+}
+
+function startTimer() {
+  //reset timer
+  timePlayed = 0;
+  finalTime = 0;
+  baseTime = 0;
+  penaltyTime = 0;
+
+  timer = setInterval(addTimer, 100);
+  gamePage.removeEventListener("click", startTimer);
+}
+
+function calculationPlayerScore() {
+  equationsArray.forEach((equation, index) => {
+    const realAnswer = equation.evaluated;
+    const playerAnswer = playerGuessArray[index];
+    console.log(realAnswer, playerAnswer);
+    if (realAnswer === playerAnswer) {
+      playerTrueGuessNumber++;
+    }
+  });
+
+  penaltyTime = (playerGuessArray.length - playerTrueGuessNumber) * 0.5;
+  finalTime = timePlayed + penaltyTime;
+}
+
+// scroll
 let valueScrollY = 0;
 
 // Game Page
@@ -112,6 +167,11 @@ function select(selectedTrue) {
   selectedTrue ? playerGuessArray.push("true") : playerGuessArray.push("false");
 
   console.log(playerGuessArray);
+
+  if (playerGuessArray.length === equationsArray.length) {
+    console.log("stop timer excuted.");
+    stopTimer();
+  }
 }
 
 // ------
@@ -187,3 +247,5 @@ startForm.addEventListener("click", () => {
     }
   });
 });
+
+gamePage.addEventListener("click", startTimer);
